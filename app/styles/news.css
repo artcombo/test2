@@ -1,0 +1,264 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEWS SIDEBAR  —  bloxd-tiers
+   Additive only. Zero changes to existing rules.
+   All colours are existing design-token variables.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── PAGE SHELL ─────────────────────────────────────────────────────────────
+   Wraps the existing .wrap + the new aside.
+   On screens < 1600 px the aside hides and the shell reverts to block,
+   restoring the original .wrap behaviour exactly.
+   ──────────────────────────────────────────────────────────────────────────*/
+.page-with-news {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 20px;    /* replaces .wrap's own 0 20px in flex context */
+  position: relative;
+  z-index: 1;
+}
+
+/* Inside the flex shell, strip .wrap's own centering so flex drives layout */
+.page-with-news > .wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 1280px;
+  margin: 0;          /* was: 0 auto — auto margin doesn't behave as expected in flex */
+  padding-left: 0;    /* parent shell provides the 20px outer gutter */
+  padding-right: 0;
+}
+
+/* ── SIDEBAR PANEL ──────────────────────────────────────────────────────── */
+.news-sidebar {
+  width: 264px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 81px;                        /* clears the sticky header */
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125,180,255,0.18) transparent;
+  padding-bottom: 32px;
+}
+
+.news-sidebar::-webkit-scrollbar       { width: 3px; }
+.news-sidebar::-webkit-scrollbar-thumb { background: rgba(125,180,255,0.2); border-radius: 2px; }
+
+/* ── SIDEBAR HEADER ─────────────────────────────────────────────────────── */
+.ns-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 0 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.ns-header-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+/* Live pulse dot — same green as the existing --green token */
+.ns-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 var(--green);
+  animation: ns-pulse 2.2s ease-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ns-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(34,197,94,.7); }
+  60%  { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0   rgba(34,197,94,0); }
+}
+
+/* ── FEED ───────────────────────────────────────────────────────────────── */
+.ns-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* ── INDIVIDUAL CARD ────────────────────────────────────────────────────── */
+.ns-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 11px 9px 13px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+}
+
+/* left accent stripe — colour set via inline CSS var per card type */
+.ns-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: 4px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--ns-accent, var(--blue-primary));
+  transition: top 0.18s ease, bottom 0.18s ease, opacity 0.18s ease;
+  opacity: 0.65;
+}
+
+.ns-card:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-bright);
+  transform: translateX(3px);
+}
+.ns-card:hover::before {
+  top: 0; bottom: 0;
+  opacity: 1;
+}
+
+/* Per-type accent colours — all reference existing tokens */
+.ns-card[data-type="test"]       { --ns-accent: var(--blue-primary); }
+.ns-card[data-type="promotion"]  { --ns-accent: var(--gold-primary); }
+.ns-card[data-type="ranking"]    { --ns-accent: var(--cyan); }
+.ns-card[data-type="retirement"] { --ns-accent: var(--text-muted); }
+.ns-card[data-type="removal"]    { --ns-accent: var(--red); }
+
+/* ── CARD TOP ROW (badge + timestamp) ──────────────────────────────────── */
+.ns-card-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.ns-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.ns-card[data-type="test"]       .ns-badge { background: rgba(125,194,255,.12); color: var(--blue-primary); }
+.ns-card[data-type="promotion"]  .ns-badge { background: rgba(243,201,105,.12); color: var(--gold-primary); }
+.ns-card[data-type="ranking"]    .ns-badge { background: rgba(113,191,221,.12); color: var(--cyan); }
+.ns-card[data-type="retirement"] .ns-badge { background: rgba(107,124,153,.15); color: var(--text-muted); }
+.ns-card[data-type="removal"]    .ns-badge { background: rgba(239, 68, 68,.12); color: var(--red); }
+
+.ns-time {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── CARD BODY (player name + description + optional tier tag) ─────────── */
+.ns-card-body {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ns-player {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  max-width: 92px;
+}
+
+.ns-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Mini tier tag — mirrors .tier-tag visual but smaller */
+.ns-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.ns-tier img { width: 10px; height: 10px; object-fit: contain; }
+.ns-tier.ht  { background: rgba(243,201,105,.15); color: var(--ht-color); }
+.ns-tier.lt  { background: rgba(145,164,196,.12); color: var(--lt-color); }
+
+/* ── CATEGORY ICON SVGs ─────────────────────────────────────────────────── */
+.ns-icon {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+}
+
+/* ── EMPTY STATE ────────────────────────────────────────────────────────── */
+.ns-empty {
+  padding: 28px 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.ns-empty-icon { font-size: 22px; margin-bottom: 6px; opacity: 0.35; }
+
+/* ── FOOTER ─────────────────────────────────────────────────────────────── */
+.ns-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────────── */
+@media (max-width: 1600px) {
+
+  /* Hide sidebar entirely */
+  .news-sidebar { display: none; }
+
+  /* Revert shell to block — .wrap re-centres itself with its own margin: 0 auto */
+  .page-with-news {
+    display: block;
+    padding: 0;        /* .wrap's own padding: 0 20px takes over */
+  }
+
+  /* Restore all original .wrap styles so nothing looks different */
+  .page-with-news > .wrap {
+    flex: unset;
+    min-width: unset;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

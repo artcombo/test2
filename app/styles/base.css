@@ -1,0 +1,83 @@
+  :root {
+    --bg-main: #08111f;
+    --bg-secondary: #0d1728;
+    --bg-card: #101b2d;
+    --bg-card-soft: #152238;
+    --bg-hover: #1a2538;
+    --border: rgba(125,180,255,0.12);
+    --border-bright: rgba(125,180,255,0.2);
+    
+    --text-primary: #f3f7ff;
+    --text-secondary: #91a4c4;
+    --text-muted: #6b7c99;
+    
+    --blue-primary: #7dc2ff;
+    --blue-soft: #5ea7ff;
+    --gold-primary: #f3c969;
+    --gold-soft: #e0b24d;
+    
+    --red-glow: #c52d2d;
+    --ht-color: #f3c969;
+    --lt-color: #91a4c4;
+
+    /* Extra tokens used throughout */
+    --red:     #ef4444;
+    --green:   #22c55e;
+    --emerald: #10b981;
+    --blue:    #3b82f6;
+    --cyan:    #71bfdd;
+    --purple:  #c889e6;
+    --gold:    #f3c969;
+    --silver:  #a8b2bd;
+    --bronze:  #cd7f32;
+    --font-mono: 'JetBrains Mono', monospace;
+    --bg-panel: rgba(255,255,255,0.03);
+    --bg-deep:  #060e1a;
+    --red-active: rgba(197,45,45,0.15);
+    --red-border: rgba(197,45,45,0.35);
+    --red-shadow: rgba(197,45,45,0.2);
+    
+    --font-display: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: radial-gradient(circle at top, rgba(125,194,255,0.08), transparent 40%), linear-gradient(180deg, #08111f 0%, #0b1422 40%, #09101b 100%);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.6s ease;
+  }
+
+  /* Grid bg */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(125,180,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(125,180,255,0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridFloat 20s ease-in-out infinite;
+    pointer-events: none; z-index: 0;
+  }
+  
+  @keyframes gridFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(-10px, -10px); }
+    66% { transform: translate(10px, -5px); }
+  }
+
+  body::after {
+    content: '';
+    position: fixed; top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 500px;
+    background: radial-gradient(ellipse at center, rgba(197,45,45,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+/* ── HEADER ── */

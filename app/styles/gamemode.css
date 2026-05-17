@@ -1,0 +1,274 @@
+  /* ── TIER LIST LAYOUT (gamemode view) ── */
+  .gamemode-grid {
+    display: flex;
+    gap: 0;
+    padding: 8px 0 32px;
+    align-items: flex-start;
+    overflow-x: auto;
+  }
+
+  /* Tier column */
+  .tier-col {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(125,180,255,0.07);
+    animation: rowIn 0.3s ease both;
+  }
+  .tier-col:last-child { border-right: none; }
+
+  /* Column header */
+  .tier-col-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px 10px;
+    border-bottom: 1px solid rgba(125,180,255,0.1);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    backdrop-filter: blur(12px);
+  }
+
+  /* Trophy icon in header */
+  .tier-col-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  /* Tier 1 — gold */
+  .tier-col[data-tier="HT1"] .tier-col-header {
+    color: #f3c969;
+    background: linear-gradient(180deg, rgba(243,201,105,0.12), rgba(243,201,105,0.04));
+    border-bottom-color: rgba(243,201,105,0.25);
+    text-shadow: 0 0 16px rgba(243,201,105,0.4);
+  }
+  /* Tier 2 — silver */
+  .tier-col[data-tier="HT2"] .tier-col-header {
+    color: #b8c4cf;
+    background: linear-gradient(180deg, rgba(168,178,189,0.10), rgba(168,178,189,0.03));
+    border-bottom-color: rgba(168,178,189,0.2);
+  }
+  /* Tier 3 — bronze */
+  .tier-col[data-tier="HT3"] .tier-col-header {
+    color: #cd9f60;
+    background: linear-gradient(180deg, rgba(205,127,50,0.10), rgba(205,127,50,0.03));
+    border-bottom-color: rgba(205,127,50,0.2);
+  }
+  /* HT4 onwards & LT tiers — muted */
+  .tier-col[data-tier="HT4"] .tier-col-header,
+  .tier-col[data-tier="HT5"] .tier-col-header {
+    color: var(--text-secondary);
+    background: rgba(255,255,255,0.02);
+    border-bottom-color: rgba(255,255,255,0.06);
+  }
+  .tier-col[data-tier^="LT"] .tier-col-header {
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.01);
+    border-bottom-color: rgba(255,255,255,0.04);
+  }
+
+  /* Player row inside tier column */
+  .tier-player-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: background 0.18s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    position: relative;
+    animation: rowIn 0.25s ease both;
+  }
+
+  .tier-player-row:hover {
+    background: rgba(125,194,255,0.06);
+  }
+
+  .tier-player-row:last-child { border-bottom: none; }
+
+  /* Small rank number badge */
+  .tier-player-row .tp-rank {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 18px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Avatar in row */
+  .tier-player-row .tp-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-card-soft);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Gold/silver/bronze avatar borders */
+  .tier-col[data-tier="HT1"] .tp-avatar { border-color: rgba(244,196,66,0.4); }
+  .tier-col[data-tier="HT2"] .tp-avatar { border-color: rgba(168,178,189,0.35); }
+  .tier-col[data-tier="HT3"] .tp-avatar { border-color: rgba(205,127,50,0.35); }
+
+  /* Username */
+  .tier-player-row .tp-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Chevron arrow */
+  .tier-player-row .tp-arrow {
+    color: var(--text-muted);
+    font-size: 11px;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .tier-player-row:hover .tp-arrow {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+
+  /* Animation delays for rows */
+  .tier-player-row:nth-child(1)  { animation-delay: 0.02s; }
+  .tier-player-row:nth-child(2)  { animation-delay: 0.05s; }
+  .tier-player-row:nth-child(3)  { animation-delay: 0.08s; }
+  .tier-player-row:nth-child(4)  { animation-delay: 0.11s; }
+  .tier-player-row:nth-child(5)  { animation-delay: 0.14s; }
+  .tier-player-row:nth-child(n+6){ animation-delay: 0.17s; }
+
+  /* Legacy class used in JS, keep empty to avoid errors */
+  .gm-card, .gm-rank-num, .gm-card-rank, .gm-card-avatar,
+  .gm-card-name, .gm-card-title, .gm-card-tier, .gm-card-bottom,
+  .gm-card-pts { }
+
+  @media (max-width: 768px) {
+    .gamemode-grid { gap: 0; }
+    .tier-col { min-width: 120px; }
+    .tier-col-header { font-size: 11px; padding: 8px 10px; }
+    .tier-player-row { padding: 8px 10px; gap: 7px; }
+    .tier-player-row .tp-avatar { width: 26px; height: 26px; border-radius: 6px; }
+    .tier-player-row .tp-name { font-size: 11px; }
+  }
+
+
+/* ── GAMEMODE GRID ── */
+.gamemode-grid {
+  display: flex;
+  gap: 16px;
+  padding: 20px 0 60px;
+  overflow-x: auto;
+  align-items: flex-start;
+}
+
+.tier-col {
+  flex: 0 0 200px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(125,180,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tier-col-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(125,180,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+
+.tier-col-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.tier-player-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.2s ease;
+}
+
+.tier-player-row:hover {
+  background: rgba(125,194,255,0.06);
+}
+
+.tier-player-row:last-child {
+  border-bottom: none;
+}
+
+.tp-rank {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.tp-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-card-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.tp-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-arrow {
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+/* Tier col header by tier type */
+.tier-col[data-tier^="HT"] .tier-col-header { color: var(--ht-color); }
+.tier-col[data-tier^="LT"] .tier-col-header { color: #c084fc; }
+
+/* Table toggle container */
+.table-toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
