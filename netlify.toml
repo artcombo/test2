@@ -1,5 +1,4 @@
-[build]
-  base    = "bloxd-tiers"
+#[build]
   command = "npm run build"
   publish = "out"
 
