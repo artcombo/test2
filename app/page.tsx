@@ -744,18 +744,6 @@ interface NewsEntry {
   timestamp: Date
 }
 
-// Map tier label → the existing ASSETS trophy SVG already embedded in the page.
-// HT1/HT2 → gold (tier1), HT3/HT4 → silver (tier2), HT5/HT6 → bronze (tier3)
-// LT tiers use the same mapping by position.
-function tierIconSrc(tier: string): string {
-  const m = tier.match(/^(HT|LT)(\d)$/)
-  if (!m) return ''
-  const n = parseInt(m[2])
-  if (n <= 2) return ASSETS.tier1
-  if (n <= 4) return ASSETS.tier2
-  return ASSETS.tier3
-}
-
 function timeAgo(d: Date): string {
   const s = Math.floor((Date.now() - d.getTime()) / 1000)
   if (s < 60)    return `${s}s`
